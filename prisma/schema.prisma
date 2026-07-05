@@ -1,0 +1,85 @@
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+generator client {
+  provider             = "prisma-client-py"
+  interface            = "asyncio"
+  recursive_type_depth = 5
+}
+
+model User {
+  id        String   @id @default(uuid())
+  email     String   @unique
+  password  String
+  name      String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  tasks Task[]
+
+  @@map("users")
+}
+
+model Task {
+  id          String    @id @default(uuid())
+  userId      String
+  title       String
+  statusId    String
+  categoryId  String
+  description String?
+  priority    Priority  @default(MEDIUM)
+  dueDate     DateTime?
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+
+  user       User        @relation(fields: [userId], references: [id], onDelete: Cascade)
+  shareLinks ShareLink[]
+  category   Category?   @relation(fields: [categoryId], references: [id])
+  status     Status?     @relation(fields: [statusId], references: [id])
+
+  @@map("tasks")
+}
+
+model Category {
+  id        String   @id @default(uuid())
+  name      String   @unique
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  tasks Task[]
+
+  @@map("categories")
+}
+
+model Status {
+  id        String   @id @default(uuid())
+  name      String   @unique
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  tasks Task[]
+
+  @@map("statuses")
+}
+
+model ShareLink {
+  id        String   @id @default(uuid())
+  taskId    String
+  token     String   @unique
+  expiresAt DateTime
+
+  task Task @relation(fields: [taskId], references: [id], onDelete: Cascade)
+
+  @@map("share_links")
+}
+
+enum Priority {
+  LOW    @map("low")
+  MEDIUM @map("medium")
+  HIGH   @map("high")
+  URGENT @map("urgent")
+
+  @@map("_priority")
+}

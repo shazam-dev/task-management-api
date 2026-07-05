@@ -1,0 +1,30 @@
+.venv/
+.env
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+env/
+venv/
+.envrc
+node_modules/
+dist/
+*.egg-info/
+.installed.cfg
+*.egg
+.mypy_cache/
+.ruff_cache/
+.pytest_cache/
+.prisma/
+
+# Generated Prisma client
+prisma/generated/
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.DS_Store
