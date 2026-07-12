@@ -1,0 +1,13 @@
+{
+  "$schema": "https://opencode.ai/config.json",
+  "mcp": {
+    "task-management": {
+      "type": "local",
+      "command": [
+        "/home/mrxmob/task-management-api/.venv/bin/python",
+        "mcp_server.py"
+      ],
+      "enabled": true
+    }
+  }
+}
